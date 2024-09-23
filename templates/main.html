@@ -550,86 +550,66 @@
 
 
     <script>
-    // Chatbot integration
+        // Chatbot integration
+    
+        const chatbotBtn = document.getElementById('chatbot-btn');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatbotMinimize = document.getElementById('chatbot-minimize');
+        const sendBtn = document.getElementById('send-btn');
+        const chatInput = document.getElementById('chat-input');
+        const chatLog = document.getElementById('chat-log'); 
+    
+        //const chatbotUrl = 'http://13.233.103.234:5000/chatbot';
+        const chatbotUrl = 'http://127.0.0.1:5001/chatbot';
 
-    const chatbotBtn = document.getElementById('chatbot-btn');
-    const chatbotContainer = document.getElementById('chatbot-container');
-    const chatbotMinimize = document.getElementById('chatbot-minimize');
-    const sendBtn = document.getElementById('send-btn');
-    const chatInput = document.getElementById('chat-input');
-    const chatLog = document.getElementById('chat-log'); 
 
-    const externalChatbotUrl = 'https://your-external-api-url/chatbot'; // Replace with your external API URL
-    const localChatbotUrl = 'http://127.0.0.1:5001/chatbot';
-
-    // Toggle chatbot visibility on button click
-    chatbotBtn?.addEventListener('click', () => {
-        chatbotContainer.style.display = chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '' ? 'flex' : 'none';
-    });
-
-    // Minimize chatbot
-    chatbotMinimize.addEventListener('click', () => {
-        chatbotContainer.style.display = 'none';
-    });
-
-    // Handle sending a message to the chatbot
-    sendBtn.addEventListener('click', async () => {
-        const userMessage = chatInput.value;
-        if (userMessage.trim() === '') return; 
-
-        // Display user message
-        const userMsgElement = document.createElement('p');
-        userMsgElement.textContent = `You: ${userMessage}`;
-        chatLog.appendChild(userMsgElement);
-
-        // Clear the input
-        chatInput.value = '';
-
-        // Try to send message to external chatbot API first
-        try {
-            const response = await fetch(externalChatbotUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: userMessage })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                // Display chatbot response
-                const botMsgElement = document.createElement('p');
-                botMsgElement.textContent = `Bot: ${data.response}`;
-                chatLog.appendChild(botMsgElement);
-            } else {
-                throw new Error('External API error');
-            }
-        } catch (error) {
-            console.error('Error connecting to external chatbot, trying local:', error);
-            // If external fails, try local API
+    
+        // Toggle chatbot visibility on button click
+        chatbotBtn?.addEventListener('click', () => {
+            chatbotContainer.style.display = chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '' ? 'flex' : 'none';
+        });
+    
+        // Minimize chatbot
+        chatbotMinimize.addEventListener('click', () => {
+            chatbotContainer.style.display = 'none';
+        });
+    
+        // Handle sending a message to the chatbot
+        sendBtn.addEventListener('click', async () => {
+            const userMessage = chatInput.value;
+            if (userMessage.trim() === '') return; 
+            // Display user message
+            const userMsgElement = document.createElement('p');
+            userMsgElement.textContent = `You: ${userMessage}`;
+            chatLog.appendChild(userMsgElement);
+    
+            // Clear the input
+            chatInput.value = '';
+    
+            // Send message to Flask chatbot API
             try {
-                const response = await fetch(localChatbotUrl, {
+                const response = await fetch(chatbotUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ message: userMessage })
                 });
-
+    
                 const data = await response.json();
+    
                 // Display chatbot response
                 const botMsgElement = document.createElement('p');
                 botMsgElement.textContent = `Bot: ${data.response}`;
                 chatLog.appendChild(botMsgElement);
             } catch (error) {
-                console.error('Error connecting to local chatbot:', error);
+                console.error('Error connecting to chatbot:', error);
                 const errorMsgElement = document.createElement('p');
-                errorMsgElement.textContent = 'Error connecting to both chatbots!';
+                errorMsgElement.textContent = 'Error connecting to chatbot!';
                 chatLog.appendChild(errorMsgElement);
             }
-        }
-    });
-</script>
+        });
+    </script>
 
    
 </body>

@@ -1,4 +1,6 @@
 from flask import Flask, Response, render_template, request, redirect, url_for, flash
+from flask_cors import CORS
+
 from werkzeug.utils import secure_filename  # Add this import
 from flask import send_from_directory
 import speech_recognition as sr
@@ -22,6 +24,7 @@ from email import encoders
 
 # Initialize Flask
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'your_generated_secret_key'  
 # Update this with a generated key
 # Initialize the SNS client

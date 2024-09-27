@@ -28,13 +28,13 @@ CORS(app)
 app.secret_key = 'your_generated_secret_key'  
 # Update this with a generated key
 # Initialize the SNS client
-sns_client = boto3.client('sns', region_name='us-east-1')
+sns_client = boto3.client('sns', region_name='us-east-2')
 
 # ARNs
-# HERE deletes T
-arn_police = 'arn:aws:sns:us-east-1:107335645910:sumanbot'
+# HERE deletes 0
+#forSNS = 'arn:aws:sns:us-east-2:107335645910:forSNS'
 # HERE deletes i
-arn_neighbors = 'arn:aws:sns:us-east-1:107335645910:Padosi'
+#Help_from_padosi = 'arn:aws:sns:us-east-2:107335645910:Help_from_padosi'
 
 # Initialize recognizer
 recognizer = sr.Recognizer()
@@ -326,10 +326,10 @@ def listen_for_commands():
                 command = recognizer.recognize_google(audio).lower()
 
                 # Check for specific keywords to trigger SNS alerts
-                if 'laptop' in command:
-                    send_sns_alert(arn_police, 'Alert: Assistance required from the police.')
-                elif 'picnic' in command or 'neighbor' in command:
-                    send_sns_alert(arn_neighbors, 'Alert: Assistance required from neighbors.')
+                if 'iron' in command:
+                    send_sns_alert(forSNS, 'Emergency Alert: Please send immediate police assistance to my location. This is a life-threatening situation, and help is required urgently.Location details have been shared with this message.Address: 5th Floor, NSIC Building, MancheswaHelp Needed Industrial Estate, BHUBANESWAR,ODISHA - 751010Please respond immediately.Thank you.')
+                elif 'sephora' in command or 'picnic' in command:
+                    send_sns_alert(Help_from_padosi, 'Emergency Alert: Please send help immediately to my location. There is a critical situation, and assistance is urgently required.Location details have been shared with this message.Address: 5th Floor, NSIC Building, Mancheswar Industrial Estate, BHUBANESWAR,ODISHA - 751010 Please respond quickly.Thank you.')
                 else:
                     print(f"Unrecognized command: {command}")
 
